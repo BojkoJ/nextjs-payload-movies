@@ -6,6 +6,8 @@ import { buildConfig } from 'payload'
 import sharp from 'sharp'
 import { fileURLToPath } from 'url'
 import { MoviesCollection } from '@/collections/movie'
+import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
+import { MediaCollection } from '@/collections/media'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -23,16 +25,7 @@ export default buildConfig({
       fields: [],
     },
     MoviesCollection,
-    {
-      slug: 'media',
-      upload: true,
-      fields: [
-        {
-          name: 'text',
-          type: 'text',
-        },
-      ],
-    },
+    MediaCollection,
   ],
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
@@ -43,6 +36,16 @@ export default buildConfig({
       connectionString: process.env.POSTGRES_URI || '',
     },
   }),
+  plugins: process.env.BLOB_READ_WRITE_TOKEN
+    ? [
+        vercelBlobStorage({
+          collections: {
+            [MediaCollection.slug]: true,
+          },
+          token: process.env.BLOB_READ_WRITE_TOKEN || '',
+        }),
+      ]
+    : [],
   i18n: {
     supportedLanguages: { en },
   },
