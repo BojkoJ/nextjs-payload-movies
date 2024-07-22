@@ -11,6 +11,7 @@ const Page = async () => {
   const movies = await payload.find({
     collection: 'movies',
     sort: '-votes',
+    pagination: false,
   })
 
   return (
