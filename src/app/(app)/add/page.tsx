@@ -13,8 +13,8 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel'
 
-import { addMovieAction } from '@/movies'
 import { posterURL } from '@/movies/utils'
+import { addMovieAction } from '@/movies'
 
 export default function Page() {
   const [query, setQuery] = useState('')
