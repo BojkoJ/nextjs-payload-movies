@@ -84,6 +84,7 @@ export async function addVote(movieId: number) {
   const movies = await payload.find({
     collection: 'movies',
     sort: '-votes',
+    pagination: false,
   })
   return movies.docs
 }
